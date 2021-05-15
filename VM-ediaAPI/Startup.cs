@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using VM_ediaAPI.Data;
 
 namespace VM_ediaAPI
 {
@@ -27,6 +29,9 @@ namespace VM_ediaAPI
         {
 
             services.AddControllers();
+            services.AddDbContext<DataContext>(opt => opt.UseNpgsql(
+                Configuration.GetConnectionString("connectionString")
+            ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
