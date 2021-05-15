@@ -32,6 +32,7 @@ namespace VM_ediaAPI
             services.AddDbContext<DataContext>(opt => opt.UseNpgsql(
                 Configuration.GetConnectionString("connectionString")
             ));
+            services.AddScoped<IGenRepo, GenRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
