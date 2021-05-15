@@ -33,6 +33,7 @@ namespace VM_ediaAPI
                 Configuration.GetConnectionString("connectionString")
             ));
             services.AddScoped<IGenRepo, GenRepo>();
+            services.AddScoped<IUserRepo, UserRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

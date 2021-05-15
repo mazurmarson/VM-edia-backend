@@ -15,5 +15,6 @@ namespace VM_ediaAPI.Models
         public string Description { get; set; }
         public virtual List<Photo> Photos {get; set;}
         public virtual List<Follow> Followers {get; set;}
+        public virtual List<Follow> FollowedUsers {get; set;}
     }
 }
