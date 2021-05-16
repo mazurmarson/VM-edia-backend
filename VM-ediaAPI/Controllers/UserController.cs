@@ -23,5 +23,11 @@ namespace VM_ediaAPI.Controllers
             await _repo.Register(registerUserDto);
             return StatusCode(201);
         }
+
+        // [HttpPost("login")]
+        // public ActionResult Login(LoginDto dto)
+        // {
+        //     string toke = _repo.GenerateJwt(dto)
+        // }
     }
 }

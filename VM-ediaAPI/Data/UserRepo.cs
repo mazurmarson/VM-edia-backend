@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using VM_ediaAPI.Dtos;
@@ -36,6 +37,14 @@ namespace VM_ediaAPI.Data
             return registerUserDto;
         }
 
+        // public string GenerateJwt(LoginDto dto)
+        // {
+        //     var user = _context.Users.FirstOrDefault(x => x.Mail == dto.Mail);
 
+        //     if(user is null)
+        //     {
+        //         throw new BadReqyuest
+        //     }
+        // }
     }
 }
