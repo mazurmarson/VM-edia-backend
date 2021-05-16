@@ -32,8 +32,10 @@ namespace VM_ediaAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var AuthenticationSettings = new AuthenticationSettings();
-            Configuration.GetSection("Authentication").Bind(AuthenticationSettings);
+            var authenticationSettings = new AuthenticationSettings();
+            Configuration.GetSection("Authentication").Bind(authenticationSettings);
+
+            services.AddSingleton(authenticationSettings);
 
             services.AddAuthentication(opt => {
                 opt.DefaultAuthenticateScheme = "Bearer";
@@ -44,9 +46,9 @@ namespace VM_ediaAPI
                 cfg.SaveToken = true;
                 cfg.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidIssuer = AuthenticationSettings.JwtIssuer, //Kto generuje
-                    ValidAudience = AuthenticationSettings.JwtIssuer, //Kto jest odbiorcą
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AuthenticationSettings.JwtKey))
+                    ValidIssuer = authenticationSettings.JwtIssuer, //Kto generuje
+                    ValidAudience = authenticationSettings.JwtIssuer, //Kto jest odbiorcą
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey))
                 };
             });
 

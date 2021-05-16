@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using VM_ediaAPI.Exceptions;
 
 namespace VM_ediaAPI.Middleware
 {
@@ -19,6 +20,11 @@ namespace VM_ediaAPI.Middleware
             try
             {
                await next.Invoke(context);
+            }
+            catch(BadRequestException badRequestException)
+            {
+                context.Response.StatusCode = 404;
+                await context.Response.WriteAsync(badRequestException.Message);
             }
             catch (DllNotFoundException NotFoundException)
             {

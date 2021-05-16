@@ -24,10 +24,11 @@ namespace VM_ediaAPI.Controllers
             return StatusCode(201);
         }
 
-        // [HttpPost("login")]
-        // public ActionResult Login(LoginDto dto)
-        // {
-        //     string toke = _repo.GenerateJwt(dto)
-        // }
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto dto)
+        {
+            string token = await _repo.GenerateJwt(dto);
+            return Ok(token);
+        }
     }
 }

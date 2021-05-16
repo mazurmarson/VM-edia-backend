@@ -1,0 +1,34 @@
+2021-05-17 00:33:29.8539||INFO|Microsoft.Hosting.Lifetime|Now listening on: https://localhost:5001 
+2021-05-17 00:33:29.8818||INFO|Microsoft.Hosting.Lifetime|Now listening on: http://localhost:5000 
+2021-05-17 00:33:29.8818||INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. 
+2021-05-17 00:33:29.8818||INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development 
+2021-05-17 00:33:29.8818||INFO|Microsoft.Hosting.Lifetime|Content root path: E:\Nauka\MV-gram\VM-edia-backend\VM-ediaAPI 
+2021-05-17 00:36:19.6688||FATAL|Microsoft.AspNetCore.Server.Kestrel|Unable to start Kestrel. System.IO.IOException: Failed to bind to address https://127.0.0.1:5001: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Tylko jedno użycie każdego adresu gniazda (protokół/adres sieciowy/port) jest normalnie dozwolone.
+ ---> System.Net.Sockets.SocketException (10048): Tylko jedno użycie każdego adresu gniazda (protokół/adres sieciowy/port) jest normalnie dozwolone.
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.<Bind>g__BindSocket|13_0(<>c__DisplayClass13_0& )
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.<Bind>g__BindSocket|13_0(<>c__DisplayClass13_0& )
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass29_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindAsync(IEnumerable`1 listenOptions, AddressBindContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+2021-05-17 00:39:43.3207||INFO|Microsoft.Hosting.Lifetime|Application is shutting down... 
+2021-05-17 00:39:48.4348||INFO|Microsoft.Hosting.Lifetime|Now listening on: https://localhost:5001 
+2021-05-17 00:39:48.4641||INFO|Microsoft.Hosting.Lifetime|Now listening on: http://localhost:5000 
+2021-05-17 00:39:48.4641||INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. 
+2021-05-17 00:39:48.4641||INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development 
+2021-05-17 00:39:48.4641||INFO|Microsoft.Hosting.Lifetime|Content root path: E:\Nauka\MV-gram\VM-edia-backend\VM-ediaAPI 
+2021-05-17 00:40:06.2069||INFO|Microsoft.Hosting.Lifetime|Application is shutting down... 

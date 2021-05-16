@@ -8,5 +8,6 @@ namespace VM_ediaAPI.Data
     public interface IUserRepo : IGenRepo
     {
          Task<RegisterUserDto> Register(RegisterUserDto registerUserDto);
+         Task<string> GenerateJwt(LoginDto dto);
     }
 }
