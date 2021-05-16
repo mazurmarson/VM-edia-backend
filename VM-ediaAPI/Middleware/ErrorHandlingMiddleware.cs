@@ -20,6 +20,11 @@ namespace VM_ediaAPI.Middleware
             {
                await next.Invoke(context);
             }
+            catch (DllNotFoundException NotFoundException)
+            {
+                context.Response.StatusCode = 404;
+                await context.Response.WriteAsync(NotFoundException.Message);
+            }
             catch(Exception e)
             {
                 _logger.LogError(e, e.Message);

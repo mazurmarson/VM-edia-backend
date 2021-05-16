@@ -107,3 +107,9 @@ System.InvalidOperationException: An exception has been raised that is likely du
    at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
    at VM_ediaAPI.Middleware.ErrorHandlingMiddleware.InvokeAsync(HttpContext context, RequestDelegate next) in E:\Nauka\MV-gram\VM-edia-backend\VM-ediaAPI\Middleware\ErrorHandlingMiddleware.cs:line 21
 2021-05-16 22:43:54.6006||INFO|Microsoft.Hosting.Lifetime|Application is shutting down... 
+2021-05-16 23:21:16.8427||INFO|Microsoft.Hosting.Lifetime|Now listening on: https://localhost:5001 
+2021-05-16 23:21:16.8736||INFO|Microsoft.Hosting.Lifetime|Now listening on: http://localhost:5000 
+2021-05-16 23:21:16.8736||INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. 
+2021-05-16 23:21:16.8789||INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development 
+2021-05-16 23:21:16.8789||INFO|Microsoft.Hosting.Lifetime|Content root path: E:\Nauka\MV-gram\VM-edia-backend\VM-ediaAPI 
+2021-05-16 23:21:49.8840||INFO|Microsoft.Hosting.Lifetime|Application is shutting down... 

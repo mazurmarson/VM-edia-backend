@@ -58,6 +58,7 @@ namespace VM_ediaAPI
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddScoped<ErrorHandlingMiddleware>();
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,7 +71,10 @@ namespace VM_ediaAPI
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseAuthentication();
             app.UseHttpsRedirection();
-
+            app.UseSwagger();
+            app.UseSwaggerUI(x => {
+                x.SwaggerEndpoint("/swagger/v1/swagger.json", "VM-edia API");
+            });
             app.UseRouting();
 
             app.UseAuthorization();

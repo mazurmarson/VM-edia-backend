@@ -46,5 +46,9 @@ namespace VM_ediaAPI.Data
         //         throw new BadReqyuest
         //     }
         // }
+
+        //Obsluga przykłądowego bledu NotFound w metodzie GET
+        //If(smomething is null)
+        //throw new NotFoundException("Something not found")
     }
 }
