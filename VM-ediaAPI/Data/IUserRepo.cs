@@ -1,10 +1,12 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using VM_ediaAPI.Dtos;
 using VM_ediaAPI.Models;
 
 namespace VM_ediaAPI.Data
 {
     public interface IUserRepo : IGenRepo
     {
-         Task<User> Register(User user);
+         Task<RegisterUserDto> Register(RegisterUserDto registerUserDto);
     }
 }

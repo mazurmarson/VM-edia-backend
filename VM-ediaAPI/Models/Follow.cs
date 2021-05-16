@@ -4,8 +4,8 @@ namespace VM_ediaAPI.Models
     {
         public int Id { get; set; }
         public int FollowerId { get; set; }
-        public virtual User Follower { get; set; }
+        public  User Follower { get; set; }
         public int FollowedUserId {get; set;}
-        public virtual User FollowedUser {get; set;}
+        public  User FollowedUser {get; set;}
     }
 }
