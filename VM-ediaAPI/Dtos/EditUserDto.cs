@@ -2,9 +2,9 @@ using System;
 
 namespace VM_ediaAPI.Dtos
 {
-    public class RegisterUserDto
+    public class EditUserDto
     {
-
+        public int Id {get; set;}
         public string Login { get; set; }  
         public string Mail { get; set; }    
         public string Password { get; set; }
@@ -13,7 +13,5 @@ namespace VM_ediaAPI.Dtos
         public DateTime DateOfBirth { get; set; }
         public string Description { get; set; }
         public string MainPhotoUrl {get; set; }
-        
-
     }
 }

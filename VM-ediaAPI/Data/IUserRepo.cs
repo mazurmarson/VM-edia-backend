@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using VM_ediaAPI.Dtos;
@@ -9,5 +10,8 @@ namespace VM_ediaAPI.Data
     {
          Task<RegisterUserDto> Register(RegisterUserDto registerUserDto);
          Task<string> GenerateJwt(LoginDto dto);
+         Task<IEnumerable<User>> GetUsers();
+         Task<User> EditUser(User user, string newPassword);
+         Task<User> GetUserById(int id);
     }
 }

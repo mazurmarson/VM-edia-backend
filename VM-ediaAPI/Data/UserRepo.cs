@@ -12,6 +12,7 @@ using VM_ediaAPI.Dtos;
 using VM_ediaAPI.Exceptions;
 using VM_ediaAPI.Models;
 
+
 namespace VM_ediaAPI.Data
 {
     public class UserRepo : GenRepo, IUserRepo
@@ -35,7 +36,8 @@ namespace VM_ediaAPI.Data
                 Login = registerUserDto.Login,
                 Mail = registerUserDto.Mail,
                 DateOfBirth = registerUserDto.DateOfBirth,
-                Description = registerUserDto.Description
+                Description = registerUserDto.Description,
+                MainPhotoUrl = registerUserDto.MainPhotoUrl
                 
 
             };
@@ -46,6 +48,9 @@ namespace VM_ediaAPI.Data
 
             return registerUserDto;
         }
+
+        
+
 
         public async Task<string> GenerateJwt(LoginDto dto)
         {
@@ -78,6 +83,29 @@ namespace VM_ediaAPI.Data
 
             var tokenHandler = new JwtSecurityTokenHandler();
             return tokenHandler.WriteToken(token);
+        }
+
+        public async Task<IEnumerable<User>> GetUsers()
+        {
+            var users = await _context.Users.ToListAsync();
+            return users;
+        }
+
+        public async Task<User> EditUser(User user, string newPassword)
+        {
+            
+            user.PasswordHash = _passwordHasher.HashPassword(user, newPassword);
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return user;
+        }
+
+        public async Task<User> GetUserById(int id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            return user;
         }
 
         //Obsluga przykłądowego bledu NotFound w metodzie GET

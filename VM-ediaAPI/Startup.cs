@@ -58,6 +58,7 @@ namespace VM_ediaAPI
             ));
             services.AddScoped<IGenRepo, GenRepo>();
             services.AddScoped<IUserRepo, UserRepo>();
+            services.AddScoped<IFollowRepo, FollowRepo>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddSwaggerGen();
