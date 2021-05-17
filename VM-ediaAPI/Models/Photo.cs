@@ -1,3 +1,5 @@
+using System;
+
 namespace VM_ediaAPI.Models
 {
     public class Photo
@@ -7,6 +9,7 @@ namespace VM_ediaAPI.Models
         public virtual User User {get; set;}
         public string Description { get; set; }
         public string UrlAdress { get; set; }
+        public DateTime CreatedAt {get; set;}
 
     }
 }

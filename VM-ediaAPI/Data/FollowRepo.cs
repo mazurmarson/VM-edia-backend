@@ -26,7 +26,7 @@ namespace VM_ediaAPI.Data
         public async Task<Follow> GetFollow(int id)
         {
             var follow = await _context.Follows.FirstOrDefaultAsync(x => x.Id == id);
-            var follow2 = follow;
+        
             return follow;
         }
 
