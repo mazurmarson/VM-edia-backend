@@ -108,6 +108,11 @@ namespace VM_ediaAPI.Data
             return user;
         }
 
+        public async Task<User> GetUserDetails(int id)
+        {
+         //   var user = _context.Users.Where(x => x.Id == id).Select
+        }
+
         //Obsluga przykłądowego bledu NotFound w metodzie GET
         //If(smomething is null)
         //throw new NotFoundException("Something not found")

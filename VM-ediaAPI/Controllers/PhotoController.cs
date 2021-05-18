@@ -18,6 +18,12 @@ namespace VM_ediaAPI.Controllers
         {
             _repo = repo;
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPhoto(int id)
+        {
+            var photo = await _repo.GetPhoto(id);
+            return Ok(photo);
+        }
 
         [HttpPost]
         public async Task<ActionResult> AddPhoto(AddPhotoDto addPhotoDto)
@@ -44,6 +50,20 @@ namespace VM_ediaAPI.Controllers
             await _repo.SaveAll();
 
             return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdatePhoto(int id, string description)
+        {
+            var photo = await _repo.GetPhoto(id);
+            photo.Description = description;
+            _repo.Edit(photo);
+
+            if(await _repo.SaveAll())
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
     }
 }

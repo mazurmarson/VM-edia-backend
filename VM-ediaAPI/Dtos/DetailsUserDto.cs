@@ -11,11 +11,14 @@ namespace VM_ediaAPI.Dtos
         public string Mail { get; set; }    
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime DateOfBirth { get; set; }
+     //   public DateTime DateOfBirth { get; set; }
         public string Description { get; set; }
         public string MainPhotoUrl {get; set;}
+        public int AmountFollowers {get; set;}
+        public int AmoutnFollowing { get; set;}
         public  List<Photo> Photos {get; set;}
-        public  List<Follow> Followers {get; set;}
-        public  List<Follow> FollowedUsers {get; set;}
+
+
+
     }
 }
