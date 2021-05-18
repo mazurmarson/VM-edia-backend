@@ -13,5 +13,9 @@ namespace VM_ediaAPI.Data
          Task<IEnumerable<User>> GetUsers();
          Task<User> EditUser(User user, string newPassword);
          Task<User> GetUserById(int id);
+          Task<DetailsUserDto> GetUserDetails(int id);
+
+          Task<IEnumerable<UserFollowersDto>> GetUserFollowers(int id);
+          Task<IEnumerable<UserFollowingDto>> GetUserFollowing(int id);
     }
 }

@@ -7,5 +7,6 @@ namespace VM_ediaAPI.Data
     {
         
         Task<Photo> GetPhoto(int id);
+        
     }
 }

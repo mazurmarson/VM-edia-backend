@@ -60,8 +60,23 @@ namespace VM_ediaAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
-            var user = await _repo.GetUserById(id);
+            var user = await _repo.GetUserDetails(id);
             return Ok(user);
+        }
+
+        [HttpGet("followers/{id}")]
+        public async Task<IActionResult> GetUserFollowers(int id)
+        {
+            var users = await _repo.GetUserFollowers(id);
+            return Ok(users);
+        }
+
+        
+        [HttpGet("following/{id}")]
+        public async Task<IActionResult> GetUserFollowing(int id)
+        {
+            var users = await _repo.GetUserFollowing(id);
+            return Ok(users);
         }
     }
 }

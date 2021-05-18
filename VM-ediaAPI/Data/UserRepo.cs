@@ -108,9 +108,60 @@ namespace VM_ediaAPI.Data
             return user;
         }
 
-        public async Task<User> GetUserDetails(int id)
+        public async Task<DetailsUserDto> GetUserDetails(int id)
         {
-         //   var user = _context.Users.Where(x => x.Id == id).Select
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id ==id);
+            int followers = await _context.Follows.CountAsync(x => x.FollowedUserId == id);
+            int following = await _context.Follows.CountAsync(x => x.FollowerId == id);
+            var photos = await _context.Photos.Where(x => x.UserId == id).Select(x => new PhotoUserDto()
+            {
+                Id = x.Id,
+                UserId = x.UserId,
+                Description = x.Description,
+                UrlAdress = x.UrlAdress,
+                CreatedAt = x.CreatedAt
+
+            }).ToListAsync();
+
+            DetailsUserDto detailsUserDto = new DetailsUserDto
+            {
+                Id = user.Id,
+                Login = user.Login,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Description = user.Description,
+                MainPhotoUrl = user.MainPhotoUrl,
+                AmountFollowers = followers,
+                AmoutnFollowing = following,
+                Photos = photos
+            };
+
+            return detailsUserDto;
+        }
+
+        public async Task<IEnumerable<UserFollowersDto>> GetUserFollowers(int id)
+        {
+            var users = await _context.Follows.Where(x => x.FollowedUserId == id).Include(x => x.Follower).Select(x => new UserFollowersDto()
+            {
+                Id = x.Id,
+                FollowerId = x.FollowerId,
+                Login = x.Follower.Login,
+                MainPhotoUrl = x.Follower.MainPhotoUrl
+            }).ToListAsync();
+            return users;
+        }
+
+        public async Task<IEnumerable<UserFollowingDto>> GetUserFollowing(int id)
+        {
+            var users = await _context.Follows.Where(x => x.FollowerId == id).Include(x => x.FollowedUser).Select(x => new UserFollowingDto()
+            {
+                Id = x.Id,
+                FollowingId = x.FollowedUserId,
+                Login = x.FollowedUser.Login,
+                MainPhotoUrl = x.FollowedUser.MainPhotoUrl
+            }).ToListAsync();
+
+            return users;
         }
 
         //Obsluga przykłądowego bledu NotFound w metodzie GET

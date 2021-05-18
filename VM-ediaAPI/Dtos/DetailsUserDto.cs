@@ -8,7 +8,7 @@ namespace VM_ediaAPI.Dtos
     {
         public int Id { get; set; }
         public string Login { get; set; }  
-        public string Mail { get; set; }    
+ //       public string Mail { get; set; }    
         public string FirstName { get; set; }
         public string LastName { get; set; }
      //   public DateTime DateOfBirth { get; set; }
@@ -16,7 +16,7 @@ namespace VM_ediaAPI.Dtos
         public string MainPhotoUrl {get; set;}
         public int AmountFollowers {get; set;}
         public int AmoutnFollowing { get; set;}
-        public  List<Photo> Photos {get; set;}
+        public  List<PhotoUserDto> Photos {get; set;}
 
 
 

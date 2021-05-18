@@ -52,7 +52,9 @@ namespace VM_ediaAPI
                 };
             });
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
             services.AddDbContext<DataContext>(opt => opt.UseNpgsql(
                 Configuration.GetConnectionString("connectionString")
             ));
