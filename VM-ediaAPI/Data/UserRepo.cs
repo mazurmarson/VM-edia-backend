@@ -117,9 +117,9 @@ namespace VM_ediaAPI.Data
             {
                 Id = x.Id,
                 UserId = x.UserId,
-                Description = x.Description,
+         
                 UrlAdress = x.UrlAdress,
-                CreatedAt = x.CreatedAt
+     
 
             }).ToListAsync();
 
