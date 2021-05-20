@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -20,11 +21,13 @@ namespace VM_ediaAPI.Data
         private readonly DataContext _context;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly AuthenticationSettings _authenticationSettings;
-        public UserRepo(DataContext context, IPasswordHasher<User> passwordHasher, AuthenticationSettings authenticationSettings):base(context)
+        private readonly IMapper _mapper;
+        public UserRepo(DataContext context, IPasswordHasher<User> passwordHasher, AuthenticationSettings authenticationSettings, IMapper mapper):base(context)
         {
             _context = context;
             _passwordHasher = passwordHasher;
             _authenticationSettings = authenticationSettings;
+            _mapper = mapper;
         }
 
         public async Task<RegisterUserDto> Register(RegisterUserDto registerUserDto)
@@ -116,7 +119,14 @@ namespace VM_ediaAPI.Data
             int following = await _context.Follows.CountAsync(x => x.FollowerId == id);
             int followingId = 0;
 
-           
+            var posts = await _context.Posts.Where(x => x.UserId == id).OrderByDescending(x => x.CreateAt).Select(x => new UserDetailsPostDto{
+                PostId = x.Id,
+                PhotoId = x.Photos.OrderBy(x => x.Id).Select(x => x.Id).FirstOrDefault(),
+                UrlAdress = x.Photos.OrderBy(x => x.Id).Select(x => x.UrlAdress).FirstOrDefault(),
+                MoreThanOne = !x.Photos.Count().Equals(1)
+            }).ToListAsync();
+      //     var post = await _context.Posts.Where(x => x.UserId == id).OrderBy(x => x.CreateAt).ToListAsync();
+       //     var postsDto = _mapper.Map<List<Post>, List<UserDetailsPhotoDto>>(post);
             // var photos = await _context.Photos.Where(x => x.UserId == id).Select(x => new PhotoUserDto()
             // {
             //     Id = x.Id,
@@ -144,7 +154,8 @@ namespace VM_ediaAPI.Data
                 MainPhotoUrl = user.MainPhotoUrl,
                 AmountFollowers = followers,
                 AmoutnFollowing = following,
-                FollowingId = followingId
+                FollowingId = followingId,
+                Posts = posts
                // Photos = photos
             };
 

@@ -18,7 +18,7 @@ namespace VM_ediaAPI.Dtos
         public int AmoutnFollowing { get; set;}
         public int FollowingId {get; set;}
 
-        public  List<PhotoUserDto> Photos {get; set;}
+        public  List<UserDetailsPostDto> Posts {get; set;}
 
 
 
