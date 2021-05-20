@@ -1,4 +1,7 @@
+using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using VM_ediaAPI.Data;
 using VM_ediaAPI.Dtos;
@@ -11,10 +14,12 @@ namespace VM_ediaAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserRepo _repo;
+        private readonly IMapper _mapper;
 
-        public UserController(IUserRepo repo)
+        public UserController(IUserRepo repo, IMapper mapper)
         {
             _repo = repo;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -77,6 +82,21 @@ namespace VM_ediaAPI.Controllers
         {
             var users = await _repo.GetUserFollowing(id);
             return Ok(users);
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> UpdatePatch( JsonPatchDocument<UpdateUserDto> userDto)
+        {
+            int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var user = await _repo.GetUserById(userId);
+
+            var userToPatch = _mapper.Map<UpdateUserDto>(user);
+            userDto.ApplyTo(userToPatch);
+            _mapper.Map(userToPatch, user);
+            _repo.Edit(user);
+            await _repo.SaveAll();
+
+            return NoContent();
         }
     }
 }

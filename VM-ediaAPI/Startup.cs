@@ -67,6 +67,7 @@ namespace VM_ediaAPI
             services.AddScoped<ICommentRepo, CommentRepo>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddScoped<ErrorHandlingMiddleware>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSwaggerGen();
         }
 
