@@ -19,6 +19,34 @@ namespace VM_ediaAPI.Migrations
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+            modelBuilder.Entity("VM_ediaAPI.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Content")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("VM_ediaAPI.Models.Follow", b =>
                 {
                     b.Property<int>("Id")
@@ -48,7 +76,30 @@ namespace VM_ediaAPI.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int>("PostId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("UrlAdress")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Photos");
+                });
+
+            modelBuilder.Entity("VM_ediaAPI.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
                         .HasColumnType("text");
 
                     b.Property<int>("UserId")
@@ -58,7 +109,29 @@ namespace VM_ediaAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Photos");
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("VM_ediaAPI.Models.Reaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reactions");
                 });
 
             modelBuilder.Entity("VM_ediaAPI.Models.User", b =>
@@ -100,6 +173,25 @@ namespace VM_ediaAPI.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("VM_ediaAPI.Models.Comment", b =>
+                {
+                    b.HasOne("VM_ediaAPI.Models.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VM_ediaAPI.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("VM_ediaAPI.Models.Follow", b =>
                 {
                     b.HasOne("VM_ediaAPI.Models.User", "FollowedUser")
@@ -121,13 +213,52 @@ namespace VM_ediaAPI.Migrations
 
             modelBuilder.Entity("VM_ediaAPI.Models.Photo", b =>
                 {
-                    b.HasOne("VM_ediaAPI.Models.User", "User")
+                    b.HasOne("VM_ediaAPI.Models.Post", "Post")
                         .WithMany("Photos")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("VM_ediaAPI.Models.Post", b =>
+                {
+                    b.HasOne("VM_ediaAPI.Models.User", "User")
+                        .WithMany("Posts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("VM_ediaAPI.Models.Reaction", b =>
+                {
+                    b.HasOne("VM_ediaAPI.Models.Post", "Post")
+                        .WithMany("Reactions")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VM_ediaAPI.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("VM_ediaAPI.Models.Post", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Photos");
+
+                    b.Navigation("Reactions");
                 });
 
             modelBuilder.Entity("VM_ediaAPI.Models.User", b =>
@@ -136,7 +267,7 @@ namespace VM_ediaAPI.Migrations
 
                     b.Navigation("Followers");
 
-                    b.Navigation("Photos");
+                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }

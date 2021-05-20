@@ -15,7 +15,7 @@ namespace VM_ediaAPI.Models
         public string Description { get; set; }
         public string Role {get; set;} ="user";
         public string MainPhotoUrl {get; set;}
-        public  List<Photo> Photos {get; set;}
+        public  List<Post> Posts {get; set;}
         public  List<Follow> Followers {get; set;}
         public  List<Follow> FollowedUsers {get; set;}
     }

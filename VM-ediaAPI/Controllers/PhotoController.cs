@@ -31,9 +31,9 @@ namespace VM_ediaAPI.Controllers
            
             Photo photo = new Photo
             {
-                UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+              //  UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
              
-                UrlAdress = addPhotoDto.UrlAdress,
+             //   UrlAdress = addPhotoDto.UrlAdress,
            
             };
 

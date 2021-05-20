@@ -2,7 +2,7 @@
 
 namespace VM_ediaAPI.Migrations
 {
-    public partial class ChangesInModels2 : Migration
+    public partial class FixedPostModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

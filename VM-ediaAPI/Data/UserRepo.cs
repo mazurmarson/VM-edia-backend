@@ -113,15 +113,15 @@ namespace VM_ediaAPI.Data
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id ==id);
             int followers = await _context.Follows.CountAsync(x => x.FollowedUserId == id);
             int following = await _context.Follows.CountAsync(x => x.FollowerId == id);
-            var photos = await _context.Photos.Where(x => x.UserId == id).Select(x => new PhotoUserDto()
-            {
-                Id = x.Id,
-                UserId = x.UserId,
+            // var photos = await _context.Photos.Where(x => x.UserId == id).Select(x => new PhotoUserDto()
+            // {
+            //     Id = x.Id,
+            //     UserId = x.UserId,
          
-                UrlAdress = x.UrlAdress,
+            //     UrlAdress = x.UrlAdress,
      
 
-            }).ToListAsync();
+            // }).ToListAsync();
 
             DetailsUserDto detailsUserDto = new DetailsUserDto
             {
@@ -133,7 +133,7 @@ namespace VM_ediaAPI.Data
                 MainPhotoUrl = user.MainPhotoUrl,
                 AmountFollowers = followers,
                 AmoutnFollowing = following,
-                Photos = photos
+               // Photos = photos
             };
 
             return detailsUserDto;
