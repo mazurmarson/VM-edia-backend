@@ -65,11 +65,33 @@ namespace VM_ediaAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
-            var user = await _repo.GetUserDetails(id);
-            return Ok(user);
+            try
+            {
+                int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                //zalogowany ale nie obserwuje
+                var userLogged = await _repo.GetUserDetails(id, userId);
+                return Ok(userLogged);
+            }
+            catch
+            {
+                //Niezalogowany
+                int userId = 0;
+                 var user = await _repo.GetUserDetails(id, userId);
+                 return Ok(user);
+            }
+            
+
+
         }
 
-        [HttpGet("followers/{id}")]
+        // [HttpGet("followers/{id}")]
+        // public async Task<IActionResult> GetUserFollowers(int id)
+        // {
+        //     var users = await _repo.GetUserFollowers(id);
+        //     return Ok(users);
+        // }
+
+        [HttpGet("{id}/followers")]
         public async Task<IActionResult> GetUserFollowers(int id)
         {
             var users = await _repo.GetUserFollowers(id);
@@ -77,7 +99,14 @@ namespace VM_ediaAPI.Controllers
         }
 
         
-        [HttpGet("following/{id}")]
+        // [HttpGet("following/{id}")]
+        // public async Task<IActionResult> GetUserFollowing(int id)
+        // {
+        //     var users = await _repo.GetUserFollowing(id);
+        //     return Ok(users);
+        // }
+
+         [HttpGet("{id}/following")]
         public async Task<IActionResult> GetUserFollowing(int id)
         {
             var users = await _repo.GetUserFollowing(id);

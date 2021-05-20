@@ -108,11 +108,15 @@ namespace VM_ediaAPI.Data
             return user;
         }
 
-        public async Task<DetailsUserDto> GetUserDetails(int id)
+        public async Task<DetailsUserDto> GetUserDetails(int id, int userId)
         {
+
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id ==id);
             int followers = await _context.Follows.CountAsync(x => x.FollowedUserId == id);
             int following = await _context.Follows.CountAsync(x => x.FollowerId == id);
+            int followingId = 0;
+
+           
             // var photos = await _context.Photos.Where(x => x.UserId == id).Select(x => new PhotoUserDto()
             // {
             //     Id = x.Id,
@@ -122,6 +126,13 @@ namespace VM_ediaAPI.Data
      
 
             // }).ToListAsync();
+
+            if(userId != 0)
+            {
+                var isFollowed = await _context.Follows.AnyAsync(x => x.FollowedUser.Id == id && x.FollowerId == userId);
+                if(isFollowed == true)
+                    followingId = await _context.Follows.Where(x => x.FollowedUser.Id == id && x.FollowerId == userId).Select(x => x.Id).FirstOrDefaultAsync();
+            }
 
             DetailsUserDto detailsUserDto = new DetailsUserDto
             {
@@ -133,10 +144,45 @@ namespace VM_ediaAPI.Data
                 MainPhotoUrl = user.MainPhotoUrl,
                 AmountFollowers = followers,
                 AmoutnFollowing = following,
+                FollowingId = followingId
                // Photos = photos
             };
 
             return detailsUserDto;
+        }
+
+        public async Task<DetailsUserLoggedDto> GetUserDetailsLogged(int id, int loggedUserId)
+        {
+           
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id ==id);
+            int followers = await _context.Follows.CountAsync(x => x.FollowedUserId == id);
+            int following = await _context.Follows.CountAsync(x => x.FollowerId == id);
+            var isFollowed = await _context.Follows.AnyAsync(x => x.FollowedUser.Id == id && x.FollowerId == loggedUserId);
+            // var photos = await _context.Photos.Where(x => x.UserId == id).Select(x => new PhotoUserDto()
+            // {
+            //     Id = x.Id,
+            //     UserId = x.UserId,
+         
+            //     UrlAdress = x.UrlAdress,
+     
+
+            // }).ToListAsync();
+
+            DetailsUserLoggedDto detailsUserLoggedDto = new DetailsUserLoggedDto
+            {
+                Id = user.Id,
+                Login = user.Login,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Description = user.Description,
+                MainPhotoUrl = user.MainPhotoUrl,
+                AmountFollowers = followers,
+                AmoutnFollowing = following,
+                isFollowed = isFollowed
+               // Photos = photos
+            };
+
+            return detailsUserLoggedDto;
         }
 
         public async Task<IEnumerable<UserFollowersDto>> GetUserFollowers(int id)
@@ -163,6 +209,13 @@ namespace VM_ediaAPI.Data
 
             return users;
         }
+
+        public Task<bool> IsFollowed(int userId, int detailUserId)
+        {
+            throw new NotImplementedException();
+        }
+
+
 
         //Obsluga przykłądowego bledu NotFound w metodzie GET
         //If(smomething is null)

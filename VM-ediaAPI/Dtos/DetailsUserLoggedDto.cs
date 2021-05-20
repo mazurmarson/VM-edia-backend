@@ -1,12 +1,10 @@
-using System;
 using System.Collections.Generic;
-using VM_ediaAPI.Models;
 
 namespace VM_ediaAPI.Dtos
 {
-    public class DetailsUserDto
+    public class DetailsUserLoggedDto
     {
-        public int Id { get; set; }
+                public int Id { get; set; }
         public string Login { get; set; }  
  //       public string Mail { get; set; }    
         public string FirstName { get; set; }
@@ -16,11 +14,7 @@ namespace VM_ediaAPI.Dtos
         public string MainPhotoUrl {get; set;}
         public int AmountFollowers {get; set;}
         public int AmoutnFollowing { get; set;}
-        public int FollowingId {get; set;}
-
+        public bool isFollowed {get; set;}
         public  List<PhotoUserDto> Photos {get; set;}
-
-
-
     }
 }
