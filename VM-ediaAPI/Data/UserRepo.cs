@@ -141,7 +141,10 @@ namespace VM_ediaAPI.Data
             {
                 var isFollowed = await _context.Follows.AnyAsync(x => x.FollowedUser.Id == id && x.FollowerId == userId);
                 if(isFollowed == true)
+                {
                     followingId = await _context.Follows.Where(x => x.FollowedUser.Id == id && x.FollowerId == userId).Select(x => x.Id).FirstOrDefaultAsync();
+                }
+                    
             }
 
             DetailsUserDto detailsUserDto = new DetailsUserDto

@@ -65,22 +65,18 @@ namespace VM_ediaAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
-            try
+            int userId;
+            if(User.Identity.IsAuthenticated)
             {
-                int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                //zalogowany ale nie obserwuje
-                var userLogged = await _repo.GetUserDetails(id, userId);
-                return Ok(userLogged);
+                userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             }
-            catch
+            else
             {
-                //Niezalogowany
-                int userId = 0;
-                 var user = await _repo.GetUserDetails(id, userId);
-                 return Ok(user);
+                userId = 0;
             }
-            
 
+                var user = await _repo.GetUserDetails(id, userId);
+                 return Ok(user);
 
         }
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AutoMapper;
 using VM_ediaAPI.Dtos;
 using VM_ediaAPI.Models;
@@ -10,6 +11,10 @@ namespace VM_ediaAPI.Profiles
         {
             CreateMap<User, UpdateUserDto>();
             CreateMap<UpdateUserDto, User>();
+            CreateMap<Photo, PostPhotoDto>();
+            CreateMap<PostPhotoDto, Photo>();
+         //   CreateMap<List<Photo>, List<postPhotoDto>>(photos);
+            // CreateMap<List<Photo>, <List<PostPhotoDto>>();
         }
         
     }

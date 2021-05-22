@@ -35,7 +35,26 @@ namespace VM_ediaAPI.Controllers
             return StatusCode(201);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPostDetails(int id)
+        {
+            int userId;
+            if(User.Identity.IsAuthenticated)
+            {
+                userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            }
+            else
+            {
+                userId = 0;
+            }
+            
+            var postDetails = await _repo.GetPostDetailsDto(id, userId);
 
-        
+            return Ok(postDetails);
+        }
+
+
+
+
     }
 }
