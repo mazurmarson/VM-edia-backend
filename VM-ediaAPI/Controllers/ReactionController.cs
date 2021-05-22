@@ -32,5 +32,15 @@ namespace VM_ediaAPI.Controllers
 
             return StatusCode(201);
         }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteReaction(int id)
+        {
+            var reaction = _repo.GetReactionById(id);
+            _repo.Delete(reaction);
+
+            await _repo.SaveAll();
+
+            return NoContent();
+        }
     }
 }

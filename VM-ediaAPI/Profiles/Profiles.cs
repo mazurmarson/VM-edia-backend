@@ -13,6 +13,8 @@ namespace VM_ediaAPI.Profiles
             CreateMap<UpdateUserDto, User>();
             CreateMap<Photo, PostPhotoDto>();
             CreateMap<PostPhotoDto, Photo>();
+            CreateMap<UpdatePostDto, Post>();
+            CreateMap<Post, UpdatePostDto>();
          //   CreateMap<List<Photo>, List<postPhotoDto>>(photos);
             // CreateMap<List<Photo>, <List<PostPhotoDto>>();
         }

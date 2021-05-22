@@ -18,6 +18,12 @@ namespace VM_ediaAPI.Data
             _mapper = mapper;
         }
 
+        public async Task<Post> GetPostById(int postId)
+        {
+            var post = await _context.Posts.FirstOrDefaultAsync(x => x.Id == postId);
+            return post;
+        }
+
         public async Task<PostDetailsDto> GetPostDetailsDto(int postId, int userId)
         {
            // bool userReaction;

@@ -1,3 +1,7 @@
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using VM_ediaAPI.Models;
+
 namespace VM_ediaAPI.Data
 {
     public class ReactionRepo : GenRepo, IReactionRepo
@@ -8,6 +12,10 @@ namespace VM_ediaAPI.Data
             _context = context;
         }
 
-        
+        public async Task<Reaction> GetReactionById(int id)
+        {
+            var reaction = await _context.Reactions.FirstOrDefaultAsync(x => x.Id == id);
+            return reaction;
+        }
     }
 }

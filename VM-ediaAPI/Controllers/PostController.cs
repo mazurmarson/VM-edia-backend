@@ -1,6 +1,8 @@
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using VM_ediaAPI.Data;
 using VM_ediaAPI.Dtos;
@@ -13,14 +15,16 @@ namespace VM_ediaAPI.Controllers
     public class PostController : ControllerBase
     {
         private readonly IPostRepo _repo;
+        private readonly IMapper _mapper;
 
-        public PostController(IPostRepo repo)
+        public PostController(IPostRepo repo, IMapper mapper)
         {
             _repo = repo;
+            _mapper = mapper;
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPhoto(AddPostDto addPostDto)
+        public async Task<IActionResult> AddPost(AddPostDto addPostDto)
         {
             Post post = new Post
             {
@@ -53,6 +57,32 @@ namespace VM_ediaAPI.Controllers
             return Ok(postDetails);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePost(int id)
+        {
+            int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var post = await _repo.GetPostById(id);
+            if(post.UserId == userId)
+            {
+                _repo.Delete(post);
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdatePost(int id,JsonPatchDocument<UpdatePostDto> updatePostDto)
+        {
+            var post = _repo.GetPostById(id);
+            var postToPatch = _mapper.Map<UpdatePostDto>(post);
+            updatePostDto.ApplyTo(postToPatch);
+            _repo.Edit(post);
+            await _repo.SaveAll();
+
+            return NoContent();
+
+
+        }
 
 
 
