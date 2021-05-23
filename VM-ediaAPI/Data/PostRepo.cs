@@ -27,7 +27,7 @@ namespace VM_ediaAPI.Data
         public async Task<PostDetailsDto> GetPostDetailsDto(int postId, int userId)
         {
            // bool userReaction;
-            var photos = await _context.Photos.Where(x => x.Id == postId).ToListAsync();
+            var photos = await _context.Photos.Where(x => x.PostId == postId).ToListAsync();
             List<PostPhotoDto> postPhotoDto = _mapper.Map<List<Photo>, List<PostPhotoDto>>(photos);
 
             var positiveReactions = await _context.Reactions.Where(x => x.PostId == postId && x.IsPositive == true).CountAsync();

@@ -67,18 +67,24 @@ namespace VM_ediaAPI
             services.AddScoped<ICommentRepo, CommentRepo>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddScoped<ErrorHandlingMiddleware>();
+            services.AddTransient<Seed>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Seed seeder)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             app.UseMiddleware<ErrorHandlingMiddleware>();
+            seeder.SeedUsers();
+            seeder.SeedPosts();
+            seeder.SeedComments();
+            seeder.SeedReactions();
+            seeder.SeedFollow();
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseSwagger();
