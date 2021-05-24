@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,8 +17,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using VM_ediaAPI.Data;
+using VM_ediaAPI.Dtos;
 using VM_ediaAPI.Middleware;
 using VM_ediaAPI.Models;
+using VM_ediaAPI.Validators;
 
 namespace VM_ediaAPI
 {
@@ -54,7 +58,7 @@ namespace VM_ediaAPI
 
             services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
+).AddFluentValidation();
             services.AddDbContext<DataContext>(opt => opt.UseNpgsql(
                 Configuration.GetConnectionString("connectionString")
             ));
@@ -68,6 +72,14 @@ namespace VM_ediaAPI
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddTransient<Seed>();
+            services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
+            services.AddScoped<IValidator<AddPostDto>, AddPostDtoValidator>();
+            services.AddScoped<IValidator<AddCommentDto>, AddCommentDtoValidator>();
+            services.AddScoped<IValidator<AddReactionDto>, AddReactionDtoValidator>();
+            services.AddScoped<IValidator<UpdateCommentDto>, UpdateCommentDtoValidator>();
+            services.AddScoped<IValidator<UpdatePostDto>, UpdatePostDtoValidator>();
+            services.AddScoped<IValidator<UpdateUserDto>, UpdateUserDtoValidator>();
+            services.AddScoped<IValidator<Reaction>, ReactionValidator>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSwaggerGen();
         }

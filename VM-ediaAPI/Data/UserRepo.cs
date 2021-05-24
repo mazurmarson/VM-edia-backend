@@ -231,6 +231,8 @@ namespace VM_ediaAPI.Data
 
 
 
+
+
         //Obsluga przykłądowego bledu NotFound w metodzie GET
         //If(smomething is null)
         //throw new NotFoundException("Something not found")

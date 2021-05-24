@@ -27,6 +27,11 @@ namespace VM_ediaAPI.Controllers
                 UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)
             };
 
+             if(!ModelState.IsValid)
+             {
+                 return BadRequest("Coś poszło nie tak");
+             }
+
             _repo.Add(reaction);
             await _repo.SaveAll();
 

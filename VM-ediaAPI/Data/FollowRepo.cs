@@ -35,6 +35,12 @@ namespace VM_ediaAPI.Data
             throw new System.NotImplementedException();
         }
 
+        public async Task<bool> UserIsExist(int id)
+        {
+            var userIsExist = await _context.Users.AnyAsync(x => x.Id == id);
+            return userIsExist;
+        }
+
         // public Task<IEnumerable<Follow>> GetUserFollows(int userId)
         // {
         //     var fo

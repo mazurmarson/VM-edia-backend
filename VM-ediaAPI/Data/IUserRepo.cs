@@ -19,6 +19,7 @@ namespace VM_ediaAPI.Data
 
           Task<IEnumerable<UserFollowersDto>> GetUserFollowers(int id);
           Task<IEnumerable<UserFollowingDto>> GetUserFollowing(int id);
+          
          //   Task<bool> IsFollowed(int userId, int detailUserId);
          
     }

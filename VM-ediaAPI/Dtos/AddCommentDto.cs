@@ -4,5 +4,6 @@ namespace VM_ediaAPI.Dtos
     {
         public int PostId { get; set; }
         public string Content { get; set; }
+        
     }
 }

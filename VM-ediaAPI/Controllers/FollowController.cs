@@ -18,15 +18,23 @@ namespace VM_ediaAPI.Controllers
         }
       //  [Authorize]
         [HttpPost("{followedUserId}")]
-        public ActionResult FollowUser(int followedUserId)
+        public async Task<ActionResult> FollowUser(int followedUserId)
         {
+            
+            var userIsExist = await _repo.UserIsExist(followedUserId);
+            if(!userIsExist)
+            {
+                return BadRequest("User is not exist");
+            }
              Follow follow = new Follow
              {
                 FollowerId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
                  FollowedUserId = followedUserId
              };
 
-             _repo.AddFollow(follow);
+
+                await _repo.AddFollow(follow);
+             await _repo.SaveAll();
             // _repo.Add<Follow>(follow);
 
             
