@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -76,10 +77,11 @@ namespace VM_ediaAPI
             services.AddScoped<IValidator<AddPostDto>, AddPostDtoValidator>();
             services.AddScoped<IValidator<AddCommentDto>, AddCommentDtoValidator>();
             services.AddScoped<IValidator<AddReactionDto>, AddReactionDtoValidator>();
-            services.AddScoped<IValidator<UpdateCommentDto>, UpdateCommentDtoValidator>();
-            services.AddScoped<IValidator<UpdatePostDto>, UpdatePostDtoValidator>();
-            services.AddScoped<IValidator<UpdateUserDto>, UpdateUserDtoValidator>();
+            services.AddScoped<IValidator<JsonPatchDocument<UpdateCommentDto>>, UpdateCommentDtoValidator>();
+            services.AddScoped<IValidator<JsonPatchDocument<UpdatePostDto>>, UpdatePostDtoValidator>();
+            services.AddScoped<IValidator<JsonPatchDocument<UpdateUserDto>>, UpdateUserDtoValidator>();
             services.AddScoped<IValidator<Reaction>, ReactionValidator>();
+            services.AddScoped<IValidator<JsonPatchDocument<UpdateReactionDto>>, UpdateReactionDtoValidator>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSwaggerGen();
         }
@@ -92,11 +94,11 @@ namespace VM_ediaAPI
                 app.UseDeveloperExceptionPage();
             }
             app.UseMiddleware<ErrorHandlingMiddleware>();
-            seeder.SeedUsers();
-            seeder.SeedPosts();
-            seeder.SeedComments();
-            seeder.SeedReactions();
-            seeder.SeedFollow();
+        //    seeder.SeedUsers();
+        //     seeder.SeedPosts();
+        //     seeder.SeedComments();
+        //     seeder.SeedReactions();
+        //     seeder.SeedFollow();
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseSwagger();

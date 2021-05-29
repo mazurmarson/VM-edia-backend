@@ -23,6 +23,12 @@ namespace VM_ediaAPI.Data
             return follow;
         }
 
+        public async Task<bool> FollowIsExist(int id, int loggedUserId)
+        {
+            bool followIsExist = await _context.Follows.Where(x => x.FollowedUserId == id && x.FollowerId == loggedUserId).AnyAsync();
+            return followIsExist;
+        }
+
         public async Task<Follow> GetFollow(int id)
         {
             var follow = await _context.Follows.FirstOrDefaultAsync(x => x.Id == id);

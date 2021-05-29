@@ -115,6 +115,10 @@ namespace VM_ediaAPI.Data
         {
 
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id ==id);
+            if(user == null)
+            {
+                return null;
+            }
             int followers = await _context.Follows.CountAsync(x => x.FollowedUserId == id);
             int following = await _context.Follows.CountAsync(x => x.FollowerId == id);
             int followingId = 0;
@@ -146,6 +150,7 @@ namespace VM_ediaAPI.Data
                 }
                     
             }
+            
 
             DetailsUserDto detailsUserDto = new DetailsUserDto
             {
