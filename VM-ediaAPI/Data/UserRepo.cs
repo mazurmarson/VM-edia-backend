@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using VM_ediaAPI.Dtos;
 using VM_ediaAPI.Exceptions;
+using VM_ediaAPI.Helpers;
 using VM_ediaAPI.Models;
 
 
@@ -232,6 +233,15 @@ namespace VM_ediaAPI.Data
         public Task<bool> IsFollowed(int userId, int detailUserId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<PagedList<UsersDisplayDto>> GetSearchedAndSortedUsers(PageParameters pageParameters, string searchString)
+        {
+            searchString = searchString.ToLower();
+            var users = await _context.Users.Where(x => x.Login.ToLower().Contains(searchString) || x.FirstName.ToLower().Contains(searchString) || x.LastName.ToLower().Contains(searchString)).ToListAsync();
+            List<UsersDisplayDto> usersToReturn = _mapper.Map<List<UsersDisplayDto>>(users);
+
+            return PagedList<UsersDisplayDto>.ToPagedList(usersToReturn, pageParameters.PageNumber, pageParameters.PageSize);
         }
 
 

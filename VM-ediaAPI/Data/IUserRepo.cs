@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using VM_ediaAPI.Dtos;
+using VM_ediaAPI.Helpers;
 using VM_ediaAPI.Models;
 
 namespace VM_ediaAPI.Data
@@ -21,6 +22,7 @@ namespace VM_ediaAPI.Data
           Task<IEnumerable<UserFollowingDto>> GetUserFollowing(int id);
           
          //   Task<bool> IsFollowed(int userId, int detailUserId);
+             Task<PagedList<UsersDisplayDto>> GetSearchedAndSortedUsers(PageParameters pageParameters, string searchString);
          
     }
 }

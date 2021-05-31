@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using VM_ediaAPI.Data;
 using VM_ediaAPI.Dtos;
+using VM_ediaAPI.Helpers;
 using VM_ediaAPI.Models;
 using VM_ediaAPI.Validators;
 
@@ -74,11 +75,24 @@ namespace VM_ediaAPI.Controllers
 
         //     return NoContent();
         // } 
+        // [HttpGet]
+        // public async Task<IActionResult> GetUsers()
+        // {
+        //     var users = await _repo.GetUsers();
+        //     return Ok(users);
+        // }
+
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers([FromQuery] PageParameters pageParameters, string searchString)
         {
-            var users = await _repo.GetUsers();
-            return Ok(users);
+            
+            if(searchString == null)
+            {
+                searchString ="";
+            }
+            var users = await _repo.GetSearchedAndSortedUsers(pageParameters, searchString);
+            Pagger<UsersDisplayDto> usersToReturn = new Pagger<UsersDisplayDto>(users);
+            return Ok(usersToReturn);
         }
 
         [HttpGet("{id}")]
