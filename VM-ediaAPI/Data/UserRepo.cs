@@ -112,7 +112,7 @@ namespace VM_ediaAPI.Data
             return user;
         }
 
-        public async Task<DetailsUserDto> GetUserDetails(int id, int userId)
+        public async Task<DetailsUserDto> GetUserDetails(int id, int userId, PageParameters pageParameters)
         {
 
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id ==id);
@@ -164,7 +164,7 @@ namespace VM_ediaAPI.Data
                 AmountFollowers = followers,
                 AmoutnFollowing = following,
                 FollowingId = followingId,
-                Posts = posts
+                Posts = PagedList<UserDetailsPostDto>.ToPagedList(posts, pageParameters.PageNumber, pageParameters.PageSize)
                // Photos = photos
             };
 
@@ -242,6 +242,40 @@ namespace VM_ediaAPI.Data
             List<UsersDisplayDto> usersToReturn = _mapper.Map<List<UsersDisplayDto>>(users);
 
             return PagedList<UsersDisplayDto>.ToPagedList(usersToReturn, pageParameters.PageNumber, pageParameters.PageSize);
+        }
+
+        public async Task<IEnumerable<WallDto>> GetWall(int id)
+        {
+             var follows = await _context.Follows.Where(x => x.FollowerId == id).Select(x => x.FollowedUserId).ToListAsync();
+             List<WallDto> wallDto = new List<WallDto>();
+             foreach(var follow in follows)
+             {
+                    var post = await  _context.Posts.Include(x => x.Photos).Include(x => x.Reactions).Include(x => x.User).Include(x => x.Comments).Where(x => x.UserId == follow).Select(x => new WallDto() {
+                     UserId = x.UserId,
+                     Login = x.User.Login,
+                     MainPhotoUrl = x.User.MainPhotoUrl,
+                     PostId = x.Id,
+                     CreateAt = x.CreateAt,
+                     Description = x.Description,
+                     PositiveReactions = x.Reactions.Where(x => x.IsPositive == true).Count(),
+                     NegativeReactions = x.Reactions.Where(x => x.IsPositive == false).Count(),
+                      Photos = _mapper.Map<List<PostPhotoDto>>( x.Photos.Where(z => z.PostId == x.Id).ToList()),
+                      Comments = x.Comments.Where(z => z.PostId == x.Id).Select( u => new PostCommentDto() {
+                          CommentId = u.Id,
+                        UserId = u.UserId,
+                        UserLogin = u.User.Login,
+                        Content = u.Content,
+                        CreatedAt = u.CreatedAt
+                      }).ToList()
+                 }).OrderByDescending(x => x.CreateAt).AsSingleQuery().FirstOrDefaultAsync();
+                 if(post != null)
+                 {
+                     wallDto.Add(post);
+                 }
+             }
+            // var post = await _context.Posts.ForEachAsync(follows, x => follows)
+            return wallDto;
+            
         }
 
 

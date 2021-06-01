@@ -96,7 +96,7 @@ namespace VM_ediaAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(int id)
+        public async Task<IActionResult> GetUser(int id,[FromQuery]  PageParameters pageParameters)
         {
             int userId;
             if(User.Identity.IsAuthenticated)
@@ -108,12 +108,26 @@ namespace VM_ediaAPI.Controllers
                 userId = 0;
             }
 
-                var user = await _repo.GetUserDetails(id, userId);
+                 var user = await _repo.GetUserDetails(id, userId, pageParameters);
+                Pagger<UserDetailsPostDto> postToReturn = new Pagger<UserDetailsPostDto>(user.Posts);
+                DetailsUserPaggedDto detailsUserPaggedDto = new DetailsUserPaggedDto()
+                {
+                    Login = user.Login,
+                    Posts = postToReturn,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Description = user.Description,
+                    MainPhotoUrl = user.MainPhotoUrl,
+                    AmountFollowers = user.AmountFollowers,
+                    AmoutnFollowing = user.AmoutnFollowing,
+                    FollowingId = user.FollowingId
+                };
+
                 if(user == null)
                 {
                     return NotFound();
                 }
-                 return Ok(user);
+                 return Ok(detailsUserPaggedDto);
 
         }
 
@@ -178,6 +192,16 @@ namespace VM_ediaAPI.Controllers
             await _repo.SaveAll();
 
             return NoContent();
+        }
+
+        [Authorize]
+        [HttpGet("wall")]
+        public async Task<IActionResult> GetWall()
+        {
+            int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var wall = await _repo.GetWall(userId);
+
+            return Ok(wall);
         }
     }
 }

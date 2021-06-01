@@ -23,6 +23,8 @@ namespace VM_ediaAPI.Profiles
             CreateMap<UpdateReactionDto, Reaction>();
             CreateMap<User, UsersDisplayDto>();
             CreateMap<UsersDisplayDto, User>();
+            CreateMap<Post, PostCommentDto>();
+            CreateMap<PostCommentDto, Post>();
          //   CreateMap<List<Photo>, List<postPhotoDto>>(photos);
             // CreateMap<List<Photo>, <List<PostPhotoDto>>();
         }
