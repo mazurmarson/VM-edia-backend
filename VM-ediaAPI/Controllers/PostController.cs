@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -17,24 +20,31 @@ namespace VM_ediaAPI.Controllers
     {
         private readonly IPostRepo _repo;
         private readonly IMapper _mapper;
+        private readonly ITagRepo _tagRepo;
 
-        public PostController(IPostRepo repo, IMapper mapper)
+        public PostController(IPostRepo repo, ITagRepo tagRepo,IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;
+            _tagRepo = tagRepo;
         }
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddPost(AddPostDto addPostDto)
         {
+
+            
+           List<PostTag> postTags = await _tagRepo.GetTagsAndUpdateAmmountAdding(addPostDto.Description);
             Post post = new Post
             {
                 UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
                 Description = addPostDto.Description,
                 CreateAt = DateTime.Now,
-                Photos = addPostDto.Photos
+                Photos = addPostDto.Photos,
+                PostTags = postTags
             };
             _repo.Add(post);
+
             await _repo.SaveAll();
 
             return StatusCode(201);
@@ -74,6 +84,7 @@ namespace VM_ediaAPI.Controllers
             if(post.UserId == userId)
             {
                 _repo.Delete(post);
+                await _tagRepo.TagAmmountDecrementationByPostId(id);
                 await _repo.SaveAll();
                 return Ok();
             }
@@ -93,7 +104,10 @@ namespace VM_ediaAPI.Controllers
             {
                 return Unauthorized();
             }
-
+            await _tagRepo.TagAmmountDecrementationUpdateByPostId(id);
+            string description = updatePostDto.Operations.Where(x => x.path =="/description").Select(x => x.value.ToString()).FirstOrDefault();
+            var tags = await _tagRepo.UpdatePostTags(description, post.Id);
+        //    post.Tags = tags;
             var postToPatch = _mapper.Map<UpdatePostDto>(post);
             updatePostDto.ApplyTo(postToPatch);
             _mapper.Map(postToPatch, post);

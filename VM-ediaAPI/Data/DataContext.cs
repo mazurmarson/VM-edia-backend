@@ -15,10 +15,13 @@ namespace VM_ediaAPI.Data
         public DbSet<Reaction> Reactions {get; set;}
         public DbSet<Post> Posts {get; set; }
         public DbSet<Comment> Comments {get; set;}
+        public DbSet<Tag> Tags {get; set;}
+        public DbSet<PostTag> PostTags {get; set;}
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+       
         modelBuilder.Entity<User>()
         .HasMany(c => c.Followers)
         .WithOne(e => e.Follower);
@@ -26,6 +29,13 @@ namespace VM_ediaAPI.Data
         modelBuilder.Entity<User>()
         .HasMany(c => c.FollowedUsers)
         .WithOne(e => e.FollowedUser);
+
+        //modelBuilder.Entity<Post>().HasKey(x => x.Id);
+
+        modelBuilder.Entity<PostTag>().HasKey(pt => new {pt.PostId, pt.TagId});
+
+        modelBuilder.Entity<PostTag>().HasOne(pt => pt.Post).WithMany(p => p.PostTags).HasForeignKey(pt => pt.PostId);
+       modelBuilder.Entity<PostTag>().HasOne(pt => pt.Tag).WithMany(p => p.PostTags).HasForeignKey(pt => pt.TagId);
 
         //         modelBuilder.Entity<User>()
         // .Property(x => x.Login).IsRequired().HasMaxLength(40);

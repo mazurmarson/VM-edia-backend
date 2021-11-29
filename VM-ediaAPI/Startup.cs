@@ -70,6 +70,7 @@ namespace VM_ediaAPI
             services.AddScoped<IPostRepo, PostRepo>();
             services.AddScoped<IReactionRepo, ReactionRepo>();
             services.AddScoped<ICommentRepo, CommentRepo>();
+            services.AddScoped<ITagRepo, TagRepo>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddTransient<Seed>();
@@ -94,11 +95,11 @@ namespace VM_ediaAPI
                 app.UseDeveloperExceptionPage();
             }
             app.UseMiddleware<ErrorHandlingMiddleware>();
-        //    seeder.SeedUsers();
-        //     seeder.SeedPosts();
-        //     seeder.SeedComments();
-        //     seeder.SeedReactions();
-        //     seeder.SeedFollow();
+            // seeder.SeedUsers();
+            //  seeder.SeedPosts();
+            //  seeder.SeedComments();
+            //  seeder.SeedReactions();
+            //  seeder.SeedFollow();
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseSwagger();

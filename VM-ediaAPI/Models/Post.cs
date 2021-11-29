@@ -14,6 +14,7 @@ namespace VM_ediaAPI.Models
         public List<Photo> Photos { get; set; }
         public List<Reaction> Reactions { get; set; }
         public List<Comment> Comments { get; set; }
+        public  ICollection<PostTag> PostTags { get; set; }
 
     }
 }
