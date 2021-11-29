@@ -16,17 +16,30 @@ namespace VM_ediaAPI.Controllers
         {
             _repo = repo;
         }
-      //  [Authorize]
+        [Authorize]
         [HttpPost("{followedUserId}")]
-        public ActionResult FollowUser(int followedUserId)
+        public async Task<ActionResult> FollowUser(int followedUserId)
         {
+            int loggedUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userIsExist = await _repo.UserIsExist(followedUserId);
+            if(!userIsExist)
+            {
+                return NotFound();
+            }
+            bool followIsExist = await _repo.FollowIsExist(followedUserId, loggedUserId);
+            if(followIsExist)
+            {
+                return BadRequest();
+            }
              Follow follow = new Follow
              {
-                FollowerId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+                FollowerId = loggedUserId,
                  FollowedUserId = followedUserId
              };
 
-             _repo.AddFollow(follow);
+
+                await _repo.AddFollow(follow);
+             await _repo.SaveAll();
             // _repo.Add<Follow>(follow);
 
             
@@ -38,6 +51,10 @@ namespace VM_ediaAPI.Controllers
         {
             
                 var follow = await _repo.GetFollow(id);
+                if(follow == null)
+                {
+                    return NotFound();
+                }
                 _repo.Delete(follow);
                 await _repo.SaveAll();
                 return NoContent();

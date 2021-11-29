@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,8 +18,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using VM_ediaAPI.Data;
+using VM_ediaAPI.Dtos;
 using VM_ediaAPI.Middleware;
 using VM_ediaAPI.Models;
+using VM_ediaAPI.Validators;
 
 namespace VM_ediaAPI
 {
@@ -54,7 +59,7 @@ namespace VM_ediaAPI
 
             services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
+).AddFluentValidation();
             services.AddDbContext<DataContext>(opt => opt.UseNpgsql(
                 Configuration.GetConnectionString("connectionString")
             ));
@@ -62,19 +67,39 @@ namespace VM_ediaAPI
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IFollowRepo, FollowRepo>();
             services.AddScoped<IPhotoRepo, PhotoRepo>();
+            services.AddScoped<IPostRepo, PostRepo>();
+            services.AddScoped<IReactionRepo, ReactionRepo>();
+            services.AddScoped<ICommentRepo, CommentRepo>();
+            services.AddScoped<ITagRepo, TagRepo>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddScoped<ErrorHandlingMiddleware>();
+            services.AddTransient<Seed>();
+            services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
+            services.AddScoped<IValidator<AddPostDto>, AddPostDtoValidator>();
+            services.AddScoped<IValidator<AddCommentDto>, AddCommentDtoValidator>();
+            services.AddScoped<IValidator<AddReactionDto>, AddReactionDtoValidator>();
+            services.AddScoped<IValidator<JsonPatchDocument<UpdateCommentDto>>, UpdateCommentDtoValidator>();
+            services.AddScoped<IValidator<JsonPatchDocument<UpdatePostDto>>, UpdatePostDtoValidator>();
+            services.AddScoped<IValidator<JsonPatchDocument<UpdateUserDto>>, UpdateUserDtoValidator>();
+            services.AddScoped<IValidator<Reaction>, ReactionValidator>();
+            services.AddScoped<IValidator<JsonPatchDocument<UpdateReactionDto>>, UpdateReactionDtoValidator>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Seed seeder)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             app.UseMiddleware<ErrorHandlingMiddleware>();
+            // seeder.SeedUsers();
+            //  seeder.SeedPosts();
+            //  seeder.SeedComments();
+            //  seeder.SeedReactions();
+            //  seeder.SeedFollow();
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseSwagger();

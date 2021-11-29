@@ -23,6 +23,12 @@ namespace VM_ediaAPI.Data
             return follow;
         }
 
+        public async Task<bool> FollowIsExist(int id, int loggedUserId)
+        {
+            bool followIsExist = await _context.Follows.Where(x => x.FollowedUserId == id && x.FollowerId == loggedUserId).AnyAsync();
+            return followIsExist;
+        }
+
         public async Task<Follow> GetFollow(int id)
         {
             var follow = await _context.Follows.FirstOrDefaultAsync(x => x.Id == id);
@@ -33,6 +39,12 @@ namespace VM_ediaAPI.Data
         public Task<IEnumerable<Follow>> GetUserFollows(int userId)
         {
             throw new System.NotImplementedException();
+        }
+
+        public async Task<bool> UserIsExist(int id)
+        {
+            var userIsExist = await _context.Users.AnyAsync(x => x.Id == id);
+            return userIsExist;
         }
 
         // public Task<IEnumerable<Follow>> GetUserFollows(int userId)

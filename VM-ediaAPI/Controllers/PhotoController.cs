@@ -31,10 +31,10 @@ namespace VM_ediaAPI.Controllers
            
             Photo photo = new Photo
             {
-                UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
-                Description = addPhotoDto.Description,
-                UrlAdress = addPhotoDto.UrlAdress,
-                CreatedAt = DateTime.Now
+              //  UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+             
+             //   UrlAdress = addPhotoDto.UrlAdress,
+           
             };
 
             _repo.Add(photo);
@@ -56,7 +56,7 @@ namespace VM_ediaAPI.Controllers
         public async Task<ActionResult> UpdatePhoto(int id, string description)
         {
             var photo = await _repo.GetPhoto(id);
-            photo.Description = description;
+           
             _repo.Edit(photo);
 
             if(await _repo.SaveAll())

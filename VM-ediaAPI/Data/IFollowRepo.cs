@@ -11,6 +11,8 @@ namespace VM_ediaAPI.Data
         Task<Follow> GetFollow(int id);
         Task<Follow> AddFollow(Follow follow);
 
-        
+        Task<bool> UserIsExist(int id);
+
+        Task<bool> FollowIsExist(int id, int loggedUserId);
     }
 }

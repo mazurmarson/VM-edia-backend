@@ -1,12 +1,11 @@
-using System;
 using System.Collections.Generic;
 using VM_ediaAPI.Helpers;
-using VM_ediaAPI.Models;
 
 namespace VM_ediaAPI.Dtos
 {
-    public class DetailsUserDto
+    public class DetailsUserPaggedDto
     {
+
         public int Id { get; set; }
         public string Login { get; set; }  
  //       public string Mail { get; set; }    
@@ -19,9 +18,6 @@ namespace VM_ediaAPI.Dtos
         public int AmoutnFollowing { get; set;}
         public int FollowingId {get; set;}
 
-        public  PagedList<UserDetailsPostDto> Posts {get; set;}
-
-
-
+        public  Pagger<UserDetailsPostDto> Posts {get; set;}
     }
 }
